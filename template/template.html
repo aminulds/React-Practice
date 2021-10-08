@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template</title>
+    <style>
+        .user{
+            background-color: lightsalmon;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 10px gray;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        
+    </div>
+
+    <script>
+        // selector
+        const mainContainer = document.getElementById('container');
+        //fetch api data
+        fetch('https://jsonplaceholder.typicode.com/users')
+        .then(res => res.json())
+        .then(data => userData(data));
+        // userData function
+        function userData(data){
+            let userComponent = '';
+            data.forEach(user => {
+                userComponent = userComponent + `
+                <div class="user">
+                    <h2>${user.name}</h2>
+                    <p>Email: ${user.email}</p>
+                    <p><b>Address:</b>
+                        Street: ${user.address.street}
+                        Suite: ${user.address.suite}
+                        City: ${user.address.city}
+                        Zip: ${user.address.zipcode}
+                    </p>
+                </div> `;
+            });
+            // Shoe user data
+            mainContainer.innerHTML = userComponent;
+        }
+    </script>
+</body>
+</html>
