@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
 
 function App() {
   const products = [
@@ -12,18 +11,39 @@ function App() {
     {name: 'Redmi 6', price: '$94.99'},
     {name: 'Redmi 7', price: '$93.99'}
   ]
+  //Student
+  // const students = [
+  //   {name: 'Aminul', age: 22, height: '5.4"', weight: '68kg'},
+  //   {name: 'Tamanna', age: 20, height: '5.3"', weight: '55kg'},
+  //   {name: 'Shaon', age: 21, height: '5.5"', weight: '62kg'},
+  //   {name: 'Shaon', age: 21, height: '5.5"', weight: '62kg'},
+  //   {name: 'Shaon Ali', age: 21, height: '5.5"', weight: '60kg'},
+  // ]
+  // useEffect
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+    .then(res => res.json())
+    .then(data => setUsers(data));
+  }, [])
   //Return APP
   return (
     <div className="App">
       <header className="App-header">
         <h1>React App</h1>
-        <Todos></Todos>
-        <Counter></Counter>
         {
-          products.map(product => <Products productDetails={product}></Products>)
+          users.map(user => <Student userDetails={user} key={user.id} />)
         }
-        <Person name='Aminul' job='JS Developer'></Person>
-        <Person name='Tamanna' job='Student'></Person>
+        <MovieCount/>
+        {
+          // students.map(student => <Student name={student.name} age={student.age} height={student.height} weight={student.weight} />)
+        }
+
+        <Counter/>
+        {
+          products.map(product => <Products productDetails={product}/>)
+        }
+        
       </header>
      
     </div>
@@ -31,30 +51,37 @@ function App() {
   );
 }
 
-// User API Data
-function Todos(){
-  const [todos, setTodos] = useState([]);
-
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/todos')
-    .then(res => res.json())
-    .then(data => setTodos(data))
-  }, []);
+// movie count useState
+function MovieCount(){
+const [count, setCount] = useState(1);
   return(
-    <div>
-      <h3>Total Todos: {todos.length}</h3>
-      {
-        todos.map(todo => 
-          <div>
-            <p>Title: {todo.title} </p>
-          </div>
-        )
-      }
+    <div style={{marginBottom: '20px'}}>
+      <h3>I have completed {count} movies.</h3>
+      <button onClick={() => setCount(count + 1)} style={{padding: '10px', cursor: 'pointer'}}>Add Movie</button>
     </div>
   )
-
-
 }
+// Student
+function Student(props){
+  const studentStyle = {
+    width: '300px', 
+    backgroundColor: 'gray',
+    borderRadius: '10px',
+    padding: '10px 20px',
+    marginBottom: '10px'
+  };
+  // const {name, age, height, weight} = props.studentDetails;
+  const {name, username, email, website} = props.userDetails;
+  return (
+    <div style={studentStyle}>
+      <h3>Name: {name}</h3>
+      <p>UserName: {username} </p>
+      <p>Email: {email} </p>
+      <p>Website: {website} </p>
+    </div>
+  )
+}
+
 // useState
 function Counter(){
   const [count, setCount] = useState(0);
@@ -86,15 +113,7 @@ function Products(props){
     </div>
   )
 }
-//person
-function Person(props){
-  return (
-    <div style={{backgroundColor : 'lightsalmon', margin: '10px', padding: '10px'}}>
-      <h3>Name: {props.name}</h3>
-      <p>Job: {props.job} </p>
-    </div>
-  )
-}
+
 
 
 export default App;
